@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intellium Theory
-    </title>
+    <title>Intellium Theory</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,9 +17,10 @@
                 </div>
             </div>
             <div class="input-group">
-                <label for="odds">Odds</label>
+                <label for="odds">Odds (American)</label>
                 <div class="input-with-icon">
-                    <input type="number" step="0.1" id="odds" value="2.2" required>
+                    <!-- Updated to accept integer values as American odds can be positive or negative whole numbers -->
+                    <input type="number" id="odds" value="-110" required>
                     <span class="icon odds-icon"></span>
                 </div>
             </div>
