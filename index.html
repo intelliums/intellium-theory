@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intellium Theory
+    </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="input-group">
+                <label for="wager">Wager ($)</label>
+                <div class="input-with-icon">
+                    <input type="number" id="wager" value="100" required>
+                    <span class="icon dollar-icon"></span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="odds">Odds</label>
+                <div class="input-with-icon">
+                    <input type="number" step="0.1" id="odds" value="2.2" required>
+                    <span class="icon odds-icon"></span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="win-probability">Win Probability (%)</label>
+                <div class="input-with-icon">
+                    <input type="number" id="win-probability" value="60" required>
+                    <span class="icon percentage-icon"></span>
+                </div>
+            </div>
+            <div class="result">
+                <span>Expected Value</span>
+                <div id="expected-value">$0.00</div>
+            </div>
+        </div>
+    </div>
+    <script src="calculator.js"></script>
+</body>
+</html>
