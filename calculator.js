@@ -1,4 +1,3 @@
-```javascript
 function convertAmericanToDecimalOdds(americanOdds) {
     let decimalOdds;
     if (americanOdds > 0) {
@@ -44,5 +43,3 @@ document.getElementById('win-probability').addEventListener('input', updateExpec
 
 // Initial update on page load
 document.addEventListener('DOMContentLoaded', updateExpectedValue);
-
-```
