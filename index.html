@@ -2,41 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
     <title>Intellium Theory</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="loading-overlay" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="glass-container">
         <div class="calculator">
+            <h1 class="app-title">
+                <span class="title-gradient">Intellium Theory</span>
+            </h1>
+
             <div class="input-group">
                 <label for="wager">Wager ($)</label>
-                <div class="input-with-icon">
+                <div class="input-field">
+                    <span class="material-symbols-rounded">attach_money</span>
                     <input type="number" id="wager" value="100" required>
-                    <span class="icon dollar-icon"></span>
+                    <div class="input-decoration"></div>
                 </div>
             </div>
+
             <div class="input-group">
                 <label for="odds">Odds (American)</label>
-                <div class="input-with-icon">
-                    <!-- Updated to accept integer values as American odds can be positive or negative whole numbers -->
+                <div class="input-field">
+                    <span class="material-symbols-rounded">trending_up</span>
                     <input type="number" id="odds" value="-110" required>
-                    <span class="icon odds-icon"></span>
+                    <div class="input-decoration"></div>
                 </div>
             </div>
+
             <div class="input-group">
                 <label for="win-probability">Win Probability (%)</label>
-                <div class="input-with-icon">
+                <div class="input-field">
+                    <span class="material-symbols-rounded">percent</span>
                     <input type="number" id="win-probability" value="60" required>
-                    <span class="icon percentage-icon"></span>
+                    <div class="input-decoration"></div>
                 </div>
             </div>
-            <div class="result">
-                <span>Expected Value</span>
-                <div id="expected-value">$0.00</div>
+
+            <div class="result-card">
+                <div class="result-label">Expected Value</div>
+                <div id="expected-value" class="result-value">$0.00</div>
             </div>
         </div>
+
+        <div class="background-glow"></div>
     </div>
+
     <script src="calculator.js"></script>
+    <script src="interactions.js"></script>
 </body>
 </html>
