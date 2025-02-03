@@ -7,34 +7,21 @@ function calculateProfitIfWin(wager, americanOdds) {
 }
 
 function calculateExpectedValue(wager, americanOdds, winProbability) {
-    // Convert win probability to a decimal
-    winProbability = winProbability / 100;
-
-    // Calculate the fair loss probability
-    const lossProbability = 1 - winProbability;
-
-    // Calculate the profit if win based on American odds
-    const profitIfWin = calculateProfitIfWin(wager, americanOdds);
-
-    // Calculate the expected value
-    const expectedValue = (winProbability * profitIfWin) - (lossProbability * wager);
-
-    return expectedValue;
+    const winProb = winProbability / 100;
+    const lossProb = 1 - winProb;
+    const profit = calculateProfitIfWin(wager, americanOdds);
+    return (winProb * profit) - (lossProb * wager);
 }
 
-// Function to update the displayed expected value
 function updateExpectedValue() {
     const wager = parseFloat(document.getElementById('wager').value);
-    const americanOdds = parseFloat(document.getElementById('odds').value);
-    const winProbability = parseFloat(document.getElementById('win-probability').value);
-    const ev = calculateExpectedValue(wager, americanOdds, winProbability);
+    const odds = parseFloat(document.getElementById('odds').value);
+    const wp = parseFloat(document.getElementById('win-probability').value);
+    const ev = calculateExpectedValue(wager, odds, wp);
     document.getElementById('expected-value').textContent = `$${ev.toFixed(2)}`;
 }
 
-// Event listeners for input changes
 document.getElementById('wager').addEventListener('input', updateExpectedValue);
 document.getElementById('odds').addEventListener('input', updateExpectedValue);
 document.getElementById('win-probability').addEventListener('input', updateExpectedValue);
-
-// Initial update on page load
 document.addEventListener('DOMContentLoaded', updateExpectedValue);
