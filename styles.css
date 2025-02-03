@@ -1,159 +1,331 @@
-/* Basic reset and font setup */
-body, html {
+:root {
+    --primary: #007AFF;
+    --primary-hover: #0063CC;
+    --background: #000000;
+    --surface: #1C1C1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #86868B;
+    --glass: rgba(255, 255, 255, 0.05);
+    --golden-ratio: 1.618;
+    --base-unit: 1rem;
+    --sf-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif;
+    --ease-squish: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-glass: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    --depth-1: 0 1px 2px rgba(0,0,0,0.02);
+    --depth-2: 0 4px 12px rgba(0,0,0,0.08);
+    --depth-3: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #1c1c1e; /* Dark background for the whole page */
-    color: #fff; /* White text color */
-  }
-  
-  /* Container for the calculator */
-  .container {
+}
+
+body {
+    font-family: var(--sf-font);
+    background: var(--background);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 350px;
-    margin: 50px auto;
-    background-color: #2c2c2e; /* Slightly lighter dark shade for the calculator */
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5); /* Subtle shadow for depth */
-  }
-  
-  /* Styling for the calculator form */
-  .calculator {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Style for each input group */
-  .input-group {
+    height: 100%;
+    background: var(--background);
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    transition: opacity 0.6s ease;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--text-secondary);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+}
+
+.glass-container {
+    width: 90vw;
+    max-width: 440px;
+    min-height: 80vh;
+    aspect-ratio: 1/var(--golden-ratio);
+    margin: 2rem auto;
+    backdrop-filter: blur(40px);
+    background: var(--glass);
+    border-radius: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--depth-3);
     position: relative;
-    margin-bottom: 20px;
-  }
-  
-  /* Style for input labels */
-  .input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 16px;
-    color: #8e8e93; /* Light grey text color */
-  }
-  
-  /* Style for input fields with icons */
-  .input-with-icon {
-    position: relative;
+    overflow: hidden;
+    transform: perspective(1000px);
+    transform-style: preserve-3d;
+    animation: container-entrance 1.2s var(--ease-squish) forwards;
+    opacity: 0;
+}
+
+.app-nav {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
     display: flex;
-    align-items: center;
-    background-color: #3a3a3c; /* Input background color */
-    border-radius: 10px;
-  }
-  
-  .input-with-icon input {
-    flex-grow: 1;
-    padding: 15px;
+    gap: 0.75rem;
+    z-index: 10;
+}
+
+.nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--surface);
     border: none;
-    background-color: transparent; /* Transparent background */
-    color: #fff;
-    font-size: 18px;
-    border-radius: 10px;
-  }
-  
-  /* Hide the default number input spinners */
-  .input-with-icon input[type="number"]::-webkit-inner-spin-button,
-  .input-with-icon input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  
-  /* Style for the icons next to input fields */
-  .icon {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    background-size: cover;
-    background-position: center;
-    margin: 0 15px;
-  }
-  
-  /* Custom icons for each input field */
-  .dollar-icon {
-    background-image: url('dollar-icon.svg'); /* Replace with actual path */
-  }
-  
-  .odds-icon {
-    background-image: url('odds-icon.svg'); /* Replace with actual path */
-  }
-  
-  .percentage-icon {
-    background-image: url('percentage-icon.svg'); /* Replace with actual path */
-  }
-  
-  /* Style for the result display */
-  .result {
-    margin-top: 20px;
-    text-align: center;
-    color: #10c469; /* Green color for the expected value */
-  }
-  
-  .result span {
-    display: block;
-    font-size: 16px;
-    color: #8e8e93; /* Light grey text color */
-  }
-  
-  .result div {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 5px;
-  }
-  
-  /* Media queries for responsiveness */
-  @media (max-width: 400px) {
-    .container {
-      margin: 20px auto;
-      padding: 15px;
-    }
-  
-    .input-group label,
-    .result span {
-      font-size: 14px;
-    }
-  
-    .input-with-icon input {
-      padding: 10px;
-      font-size: 16px;
-    }
-  
-    .result div {
-      font-size: 20px;
-    }
-  }
-  
-  /* Additional styles for increment and decrement buttons */
-  .increment-btn, .decrement-btn {
+    color: var(--text-primary);
+    display: grid;
+    place-items: center;
     cursor: pointer;
-    background-color: transparent;
-    border: none;
-    color: #fff;
-    font-size: 18px;
-    padding: 10px;
-  }
-  
-  /* Container for increment and decrement buttons */
-  .btn-container {
+    transition: all 0.3s var(--ease-squish);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--depth-2);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-button:hover {
+    transform: scale(1.08);
+    background: var(--primary);
+}
+
+.nav-button:hover::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, 
+        var(--primary) 0%, 
+        transparent 70%);
+    animation: quantum-pulse 0.6s var(--ease-glass);
+}
+
+.calculator {
+    padding: 2.5rem;
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    height: 100%;
+}
+
+.app-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.title-gradient {
+    background: linear-gradient(45deg, #7B61FF, #FF61E5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    flex: 1;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.input-field {
+    position: relative;
+    display: flex;
     align-items: center;
-    margin-left: 10px;
-  }
-  
-  /* Styling for increment and decrement icons */
-  .increment-icon, .decrement-icon {
-    background-image: url('increment-icon.svg'); /* Replace with actual path */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    width: 24px;
-    height: 24px;
-  }
-  
+    background: var(--surface);
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.6s var(--ease-squish), box-shadow 0.3s ease;
+    transform-origin: center bottom;
+}
+
+.input-field:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--depth-3);
+}
+
+.input-field input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
+    font-weight: 500;
+    transition: transform 0.3s var(--ease-squish);
+}
+
+.input-field input:focus {
+    transform: scale(1.03);
+}
+
+.input-field .material-symbols-rounded {
+    color: var(--text-secondary);
+    margin-right: 0.75rem;
+    font-size: 1.5rem;
+}
+
+.result-card {
+    background: var(--surface);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: card-appear 0.6s var(--ease-squish);
+}
+
+.result-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(255,255,255,0.1) 0%,
+        rgba(255,255,255,0) 30%,
+        rgba(255,255,255,0.1) 70%,
+        rgba(255,255,255,0) 100%
+    );
+    animation: holographic-glow 6s linear infinite;
+    mask: linear-gradient(transparent 20%, white 90%);
+}
+
+.result-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.fab-menu {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+}
+
+.fab-main {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--primary);
+    border: none;
+    color: white;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: all 0.3s var(--ease-squish);
+    box-shadow: var(--depth-3);
+}
+
+.fab-items {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.fab-item {
+    padding: 12px 20px;
+    background: var(--surface);
+    border-radius: 12px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--depth-2);
+}
+
+.fab-menu.active .fab-item {
+    animation: fab-emerge 0.6s var(--ease-squish) backwards;
+}
+
+.fab-item:hover {
+    background: var(--primary);
+    transform: translateX(-10px);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes container-entrance {
+    0% { opacity: 0; transform: scale(0.98) rotateX(5deg); }
+    100% { opacity: 1; transform: scale(1) rotateX(0); }
+}
+
+@keyframes card-appear {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes holographic-glow {
+    0% { opacity: 0.3; transform: translateX(-100%); }
+    100% { opacity: 0.3; transform: translateX(100%); }
+}
+
+@keyframes quantum-pulse {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes fab-emerge {
+    0% { opacity: 0; transform: translateY(20px) rotateX(45deg); }
+}
+
+@media (max-width: 480px) {
+    .glass-container {
+        width: 95vw;
+        margin: 1rem auto;
+    }
+    
+    .calculator {
+        padding: 1.5rem;
+    }
+    
+    .app-title {
+        font-size: 1.5rem;
+    }
+    
+    .fab-menu {
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
+}
